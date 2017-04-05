@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<calendar>
+	<year value="2015">
+		<workday>
+			<month value="1"></month>
+			<month value="2"></month>
+			<month value="3"></month>
+			<month value="4"></month>
+			<month value="5"></month>
+			<month value="6"></month>
+			<month value="7"></month>
+			<month value="8"></month>
+			<month value="9"></month>
+			<month value="10"></month>
+			<month value="11"></month>
+			<month value="12"></month>
+		</workday>
+		<freeday>
+			<month value="1"></month>
+			<month value="2"></month>
+			<month value="3"></month>
+			<month value="4"></month>
+			<month value="5"></month>
+			<month value="6"></month>
+			<month value="7"></month>
+			<month value="8"></month>
+			<month value="9"></month>
+			<month value="10"></month>
+			<month value="11"></month>
+			<month value="12"></month>
+		</freeday>
+	</year>
+	<year value="2016">
+		<workday>
+			<month value="1">4</month>
+			<month value="2">6,14</month>
+			<month value="3"></month>
+			<month value="4">2,6</month>
+			<month value="5">4</month>
+			<month value="6">12</month>
+			<month value="7"></month>
+			<month value="8"></month>
+			<month value="9">18</month>
+			<month value="10">8,9</month>
+			<month value="11"></month>
+			<month value="12"></month>
+		</workday>
+		<freeday>
+			<month value="1">1,2,3</month>
+			<month value="2">7,8,9,10,11,12,13</month>
+			<month value="3"></month>
+			<month value="4">3,4,5</month>
+			<month value="5">1,2,3</month>
+			<month value="6">9,10,11</month>
+			<month value="7"></month>
+			<month value="8"></month>
+			<month value="9">15,16,17</month>
+			<month value="10">1,2,3,4,5,6,7</month>
+			<month value="11"></month>
+			<month value="12"></month>
+		</freeday>
+	</year>
+</calendar>
