@@ -62,7 +62,7 @@ public class AccessSpeedLimit {
 	// key与真实访问记录对象，一对多的关系是因为同一个key可以配置多种不同的限制策略（可以配置同时满足2秒内可访问3次，并且5秒内只可访问5）
 	private HashMap<String, List<AccessRecord>> recordMap = new HashMap<String, List<AccessRecord>>();
 
-	// pq的存在目的是为了将要过将的访问记录对象clear，避免开启一个后台线程来清理map中过期的对象
+	// pq的存在目的是为了将要过期的访问记录对象clear，避免开启一个后台线程来清理map中过期的对象
 	private PriorityQueue<AccessRecord> pq = new PriorityQueue<AccessRecord>(256, new Comparator<AccessRecord>() {
 		@Override
 		public int compare(AccessRecord o1, AccessRecord o2) {
