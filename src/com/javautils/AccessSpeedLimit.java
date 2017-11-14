@@ -3,9 +3,10 @@ package com.javautils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,8 +49,8 @@ public class AccessSpeedLimit {
 		}
 
 		public boolean canAccess() {
-			boolean isTimeOut = this.deadline < System.currentTimeMillis();
-			if (!isTimeOut) {
+			boolean isExpired = this.deadline < System.currentTimeMillis();
+			if (!isExpired) {
 				return accessCount++ <= maxAccessCount;
 			}
 			return true;
@@ -60,7 +61,7 @@ public class AccessSpeedLimit {
 	private List<LimitConfig> limits = new ArrayList<LimitConfig>();
 
 	// key与真实访问记录对象，一对多的关系是因为同一个key可以配置多种不同的限制策略（可以配置同时满足2秒内可访问3次，并且5秒内只可访问5）
-	private HashMap<String, List<AccessRecord>> recordMap = new HashMap<String, List<AccessRecord>>();
+	private ConcurrentMap<String, List<AccessRecord>> recordMap = new ConcurrentHashMap<String, List<AccessRecord>>();
 
 	// pq的存在目的是为了将要过期的访问记录对象clear，避免开启一个后台线程来清理map中过期的对象
 	private PriorityQueue<AccessRecord> pq = new PriorityQueue<AccessRecord>(256, new Comparator<AccessRecord>() {
@@ -95,20 +96,22 @@ public class AccessSpeedLimit {
 	 * @param key
 	 * @return
 	 */
-	public synchronized boolean canAccess(String key) {
-		clearExpireKey();
+	public boolean canAccess(String key) {
+		synchronized (key.intern()) {
+			clearExpireKey();
 
-		List<AccessRecord> recordList = recordMap.get(key);
-		if (recordList == null) {
-			recordList = initAccessRecord(key);
-		}
-		for (AccessRecord record : recordList) {
-			if (!record.canAccess()) {
-				return false;
+			List<AccessRecord> recordList = recordMap.get(key);
+			if (recordList == null) {
+				recordList = initAccessRecord(key);
 			}
-		}
+			for (AccessRecord record : recordList) {
+				if (!record.canAccess()) {
+					return false;
+				}
+			}
 
-		return true;
+			return true;
+		}
 	}
 
 	// 清除recordMap和pq中key过期的对象
