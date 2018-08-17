@@ -26,16 +26,9 @@ public class DelayQueueBaseRedisSortSet {
         try {
             Tuple first = getFirst();
             long r = redisService.zadd(key, deadline, member);
-            // 如果当前队列没有元素，唤醒其它线程
-            if (first == null) {
+            // 如果当前队列没有元素，或者新加元素<队列第一个元素，唤醒其它线程
+            if (first == null || deadline < first.getScore())
                 available.signalAll();
-            } else {
-                // 如果当前加入元素比队列中第一个元素更快过期，唤醒其它线程
-                long firstDeadline = Math.round(first.getScore());
-                if (deadline < firstDeadline) {
-                    available.signalAll();
-                }
-            }
             return r;
         } finally {
             lock.unlock();
@@ -58,7 +51,7 @@ public class DelayQueueBaseRedisSortSet {
                     } else {
                         String member = first.getElement();
                         redisService.zrem(key, member);
-                        if (redisService.zcard(key) > 0) {
+                        if (redisService.zcard(key) != 0) {
                             available.signalAll();
                         }
                         return member;
