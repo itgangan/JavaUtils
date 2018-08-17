@@ -32,6 +32,8 @@ import org.apache.http.util.EntityUtils;
 
 public class HttpsUtils {
 
+	private static HttpClient instance = createHttpClientForHTTPS();
+
 	public static HttpClient createHttpClientForHTTPS() {
 		try {
 			SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
@@ -54,8 +56,8 @@ public class HttpsUtils {
 
 	public static String httpsGet(String url) {
 
-		HttpClient httpClient = createHttpClientForHTTPS();
-
+		// HttpClient httpClient = createHttpClientForHTTPS();
+		HttpClient httpClient = instance;
 		HttpGet httpGet = new HttpGet(url);
 		try {
 			HttpResponse response = httpClient.execute(httpGet);
@@ -74,7 +76,8 @@ public class HttpsUtils {
 
 	public static String httpsPost(String url, Map<String, String> args) {
 
-		HttpClient httpClient = createHttpClientForHTTPS();
+		// HttpClient httpClient = createHttpClientForHTTPS();
+		HttpClient httpClient = instance;
 
 		HttpPost httpPost = new HttpPost(url);
 		List<NameValuePair> form = new ArrayList<NameValuePair>();
