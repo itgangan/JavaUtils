@@ -24,6 +24,9 @@ public class QrcodeUtils {
 		// 以下是将Matrix转换为BufferedImage
 //		BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
 //		ImageIO.write(bufferedImage, "jpg", file);
+		// 以下是将matrix转换为ByteArrayOutputStream。然后就可以将byte转为base64
+//		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//	        MatrixToImageWriter.writeToStream(matrix, "jpg", baos);
 	}
 
 	public static void main(String[] args) throws IOException, WriterException {
